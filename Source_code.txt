@@ -1,0 +1,101 @@
+CREATE TABLE Course(
+    Id INTEGER PRIMARY KEY,
+    Title VARCHAR2 NOT NULL,
+    Description VARCHAR2,
+    Duration_months INTEGER
+);
+
+CREATE TABLE Mentor(
+    Id INTEGER PRIMARY KEY,
+    Name VARCHAR2 NOT NULL,
+    Email VARCHAR2 UNIQUE,
+    Education VARCHAR2,
+    Phone UNIQUE
+);
+
+CREATE TABLE Coordinator(
+    Id INTEGER PRMARY KEY,
+    Name VARCHAR2 NOT NULL,
+    Email VARCHAR2 UNIQUE,
+    Education VARCHAR2,
+    Phone UNIQUE
+);
+
+CREATE TABLE Batch(
+    Id VARCHAR2 PRIMARY KEY,
+    Language VARCHAR2,
+    Course_id INTEGER FOREIGN KEY REFERENCES Course(Id),
+    Coordinator_id INTEGER FOREIGN KEY REFERENCES Coordinator(Id),
+    Mentor_id INTEGER FOREIGN KEY REFERENCES Mentor(Id)
+);
+
+CREATE TABLE Student(
+    Id INTEGER PRMARY KEY,
+    Name VARCHAR2 NOT NULL,
+    Email VARCHAR2 UNIQUE,
+    Education VARCHAR2,
+    Phone UNIQUE,
+    Batch_Id VARCHAR2 FOREIGN KEY REFERENCES Batch(Id)
+);
+
+CREATE TABLE Task(
+    Id INTEGER PRIMARY KEY,
+    Course_Id INTEGER FOREIGN KEY REFERENCES Course(Id),
+    Description VARCHAR2
+);
+
+CREATE TABLE Task_Assignment_Submission(
+    Id INTEGER PRIMARY KEY,
+    Student_Id INTEGER FOREIGN KEY REFERENCES Student(Id),
+    Task_Id FOREIGN KEY REFERENCES Task(Id),
+    IsSubmitted BOOLEAN,
+    Submission_date DATE,
+    Submitted_code VARCHAR2,
+    Submitted_URL VARCHAR2,
+    Student_comment VARCHAR2
+);
+
+CREATE TABLE Mentor_Evaluation(
+    Task_Assignment_Id INTEGER FOREIGN KEY REFERENCES Task_Assignment_Submission(Id),
+    Mentor_Id INTEGER FOREIGN KEY REFERENCES Mentor(Id),
+    IsEvaluated BOOLEAN,
+    Evaluated_date DATE,
+    Mentor_comment VARCHAR2,
+    Score FLOAT
+);
+
+CREATE TABLE Queries(
+    Id INTEGER PRIMARY KEY,
+    Student_Id INTEGER FOREIGN KEY REFERENCES Student(Id),
+    Title VARCHAR2,
+    Description VARCHAR2,
+    Proof BLOB,
+    Status VARCHAR2,
+    Mentor_Id INTEGER FOREIGN KEY REFRENCES Mentor(Id),
+    IsResolved BOOLEAN,
+    Solution VARCHAR2
+);
+
+CREATE TABLE Companies_List(
+    Id INTEGER PRIMARY KEY,
+    Name VARCHAR2,
+    Role_Offered VARCHAR2
+);
+
+CREATE TABLE Placement(
+    Company_Id INTEGER FOREIGN KEY REFERENCES Companies_List(Id),
+    Student_Id INTEGER FOREIGN KEY REFERENCES Student(Id),
+    Selected_date DATE
+);
+
+CREATE TABLE FEEDBACK(
+    Student_Id FOREIGN KEY REFERENCES Student(Id),
+    Rating Float,
+    Feedback VARCHAR2,
+    Date DATE
+);
+
+
+
+
+
